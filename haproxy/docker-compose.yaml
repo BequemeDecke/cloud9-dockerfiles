@@ -1,0 +1,47 @@
+version: "3.9"
+
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  proxy:
+    image: haproxytech/haproxy-alpine:2.4
+    networks:
+      - my_network
+    depends_on:
+      - web1
+      - web2
+      - web3
+    ports:
+      - "80:80"
+      - "8404:8404"
+    volumes:
+      - "/home/lukas/OneDrive/Dokumente/Studium/4. Semester/Cloud Computing/HAProxyTest:/usr/local/etc/haproxy:ro"
+
+  web1:
+    image: httpd:2.4
+    networks:
+      - my_network
+    ports:
+      - "8081:80"
+    volumes:
+      - "/home/lukas/OneDrive/Dokumente/Studium/4. Semester/Cloud Computing/HAProxyTest/web1:/usr/local/apache2/htdocs"
+
+  web2:
+    image: httpd:2.4
+    networks:
+      - my_network
+    ports:
+      - "8082:80"
+    volumes:
+      - "/home/lukas/OneDrive/Dokumente/Studium/4. Semester/Cloud Computing/HAProxyTest/web2:/usr/local/apache2/htdocs"
+
+  web3:
+    image: httpd:2.4
+    networks:
+      - my_network
+    ports:
+      - "8083:80"
+    volumes:
+      - "/home/lukas/OneDrive/Dokumente/Studium/4. Semester/Cloud Computing/HAProxyTest/web3:/usr/local/apache2/htdocs"
